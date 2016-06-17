@@ -59,7 +59,7 @@ Let's consider the use case of reading a BEAM file's `:abstract_code` chunks.
 
 While `case`, `|>` and `with` are very useful, they each have limitations. 
 
-  1. `case` tends to hide the high level steps in the procedure due to branching and nesting.  Additionally, it can become very 
+  1. `case` tends to hide the high level steps in the pipeline due to branching and nesting.  Additionally, it can become very 
      ugly fast when there are many steps and/or many branching conditions.  Notice in the `case` implementation above, with
      only two steps it is already a little hard to quickly pick out the steps.
 
@@ -67,18 +67,18 @@ While `case`, `|>` and `with` are very useful, they each have limitations.
 
   1. `|>` can also become very ugly fast when there are many steps and/or many branching conditions.  While it is not as hard 
      to reason about as the `case` implementation, it can still become unruly.  Additionally, it can be hard to develop a 
-     pattern for dealing with reusing steps in other procedures.
+     pattern for dealing with reusing steps in other pipelines.
 
 ### Terminology
 
-Before we implement this use case as a _productive_ procedure, let's clarify some terminology.
+Before we implement this use case as a _productive_ pipeline, let's clarify some terminology.
 
-  1. A **product** is the data structure that accumulates a procedures state.  A product is passed into and returned from every 
-     step in a procedure. As the name infers, a product is the ultimate thing we are building in the procedure. The product of
+  1. A **product** is the data structure that accumulates a pipelines state.  A product is passed into and returned from every 
+     step in a pipeline. As the name infers, a product is the ultimate thing we are building in the pipeline. The product of
      a [plug](https://github.com/elixir-lang/plug) is the connection. While not a requirement, it is recommended to implement 
      the product as a struct.
 
-  1. A **procedure** is the enumerated steps necessary to complete a task.
+  1. A **pipeline** is the enumerated steps necessary to complete a task.
 
   1. A **step** is a single unit of work. The step defines one or functions to determine the state of the product 
      and is how branching is accomplished.  A step also defines one or more functions to perform work based on the determined
@@ -89,7 +89,7 @@ Before we implement this use case as a _productive_ procedure, let's clarify som
 
 ### A Simple Example
 
-Using the same use case from above let's implement this procedure using _productive_.
+Using the same use case from above let's implement this pipeline using _productive_.
 
   1. Define a product
 
@@ -111,17 +111,19 @@ Using the same use case from above let's implement this procedure using _product
       end
       ```
 
-  1. Define a procedure
+  1. Define a pipeline
 
       ```elixir
       defmodule ReadBeamFileAbstractCodeChunks do
-        use Productive.Process
+        use Productive.Pipeline
 
         # notice how wasy it is to reason about the high level steps and 
         # order of steps  to complete a product
         step ReadFile
         step ExtractAbstractCodeChunks
         step WrapChunks
+
+        defp process_result(product, _opts), do: {:ok, product}
       end
       ```
 
@@ -192,7 +194,7 @@ Using the same use case from above let's implement this procedure using _product
         end
       end
       ```
-  1. Use the procedure
+  1. Use the pipeline
 
     ```elixir
     product = AbstractCodeChunks.init(filepath: "/some/file/path")
@@ -219,27 +221,27 @@ Using the same use case from above let's implement this procedure using _product
     end
     ```
 
-It should be obvious that implementing a procedure as simple as this using _productive_ is overkill. I 
+It should be obvious that implementing a pipeline as simple as this using _productive_ is overkill. I 
 would favor the implementation using `with` for this use case.  However, this use case did provide a 
 simple example to show a 1-to-1 comparison.
 
-However, you can see that each step of the procedure is portable. The only API requirements are in the
+However, you can see that each step of the pipeline is portable. The only API requirements are in the
 data structure of the product (more specifically only the part of the product the step operates on). Thus, 
 code resuse becomes easy and encouraged. 
 
 Additionally, all knowledge of state calculation and work performance is captured in a single module which 
-makes reasoning about the step and the greater procedure much easier. While examining the implementation of
-a step, all implementation of other steps in the procedure are located in a different module and not obscuring 
+makes reasoning about the step and the greater pipeline much easier. While examining the implementation of
+a step, all implementation of other steps in the pipeline are located in a different module and not obscuring 
 this step's logic. Everything the step needs to know is carried with the product. Also, the step does not care what 
 step occurred before or after it. The step only needs to be able to handle the current calculated state of the
 product.
 
-Debugging the procedure becomes easier as the state is easily examinable by interrogating the product. Not having
-state spread out in random places makes reasoning about the procedure much easier.
+Debugging the pipeline becomes easier as the state is easily examinable by interrogating the product. Not having
+state spread out in random places makes reasoning about the pipeline much easier.
 
-Finally, each step of the procedure is now easily unit testable.
+Finally, each step of the pipeline is now easily unit testable.
 
-While this use case only has binary branching between steps, a _productive_ procedure can have infinite 
+While this use case only has binary branching between steps, a _productive_ pipeline can have infinite 
 branching between steps.
 
 ### A More Complex Example
