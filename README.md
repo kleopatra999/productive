@@ -80,7 +80,7 @@ Before we implement this use case as a _productive_ procedure, let's clarify som
 
   1. A **procedure** is the enumerated steps necessary to complete a task.
 
-  1. A **step** is a single unit of work in a procedure. The step defines one or functions to determine the state of the product 
+  1. A **step** is a single unit of work. The step defines one or functions to determine the state of the product 
      and is how branching is accomplished.  A step also defines one or more functions to perform work based on the determined
      state of the product.  Both the state determination and work performing are multi-clause functions employing pattern matching
      to select the correct clause.  While a step can do as much work as one desires, it is recommended for a step to do a single thing
