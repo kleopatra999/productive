@@ -230,10 +230,13 @@ code resuse becomes easy and encouraged.
 Additionally, all knowledge of state calculation and work performance is captured in a single module which 
 makes reasoning about the step and the greater procedure much easier.
 
-While this use case only has  binary branching between steps, a _productive_ procedure can have infinite 
-branching between steps.
+Debugging the procedure becomes easier as the state is easily examinable by interrogating the product. Not having
+state spread out in random places mafes reasoning about the procedure much easier.
 
 Finally, each step of the procedure is now easily unit testable.
+
+While this use case only has binary branching between steps, a _productive_ procedure can have infinite 
+branching between steps.
 
 ### A More Complex Example
 
