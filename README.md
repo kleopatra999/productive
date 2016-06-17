@@ -138,13 +138,13 @@ Using the same use case from above let's implement this procedure using _product
         def do_determine_state(%{filepath: nil}, _opts), do: raise "filepath cannot be nil"
 
         # Valid start states
-        def do_determine_state(%{file_contents: nil, filepath: filepath}, _opts), do: @unread
+        def do_determine_state(%{file_contents: nil, filepath: _}, _opts), do: @unread
         def do_determine_state(_product, _opts), do: @read
 
         def do_work(@read, product, _opts), do: product
 
-        def do_work(@unread, product, _opts) do
-          %{product | file_contents: File.read()}
+        def do_work(@unread, %{filepath: filepath} = product, _opts) do
+          %{product | file_contents: File.read(filepath)}
         end
       end
 
