@@ -231,7 +231,7 @@ Additionally, all knowledge of state calculation and work performance is capture
 makes reasoning about the step and the greater procedure much easier.
 
 Debugging the procedure becomes easier as the state is easily examinable by interrogating the product. Not having
-state spread out in random places mafes reasoning about the procedure much easier.
+state spread out in random places makes reasoning about the procedure much easier.
 
 Finally, each step of the procedure is now easily unit testable.
 
