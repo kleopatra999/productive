@@ -246,11 +246,17 @@ branching between steps.
 
 Next, let's look at a more complex use case so we can see the real power of _productive_.
 
-Our use case is
+TODO
+
+Our use case is TODO
 
 Implemented as a `case` statment we can see the deficiencies of this factoring of the code.
 
+TODO
+
 Refactored using `|>` and functions you can see the deficiencies of this factoring of the code.
+
+TODO
 
 ## Installation
 
