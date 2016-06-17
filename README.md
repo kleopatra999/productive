@@ -228,7 +228,9 @@ data structure of the product (more specifically only the part of the product th
 code resuse becomes easy and encouraged. 
 
 Additionally, all knowledge of state calculation and work performance is captured in a single module which 
-makes reasoning about the step and the greater procedure much easier.
+makes reasoning about the step and the greater procedure much easier. While examining the implementation of
+a step, all implementation of other steps in the procedure are located in a different module and not obscuring 
+this step's logic. Everything you need to know about the last step is contained by the product.
 
 Debugging the procedure becomes easier as the state is easily examinable by interrogating the product. Not having
 state spread out in random places makes reasoning about the procedure much easier.
